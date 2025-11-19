@@ -1,0 +1,86 @@
+# Entorno virtual
+venv/
+.env
+.env.*
+.venv/
+
+# Archivos compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos binarios / módulos compilados
+*.so
+
+# Distribución / empaquetado
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+*.egg-info/
+*.egg
+MANIFEST
+
+# Registros y logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Pruebas / Cobertura
+htmlcov/
+.coverage
+.coverage.*
+.cache
+.nox/
+.tox/
+.nox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Caché de Flask
+instance/
+.webassets-cache
+
+# Sesiones de Flask (dependiendo cómo guardes sesiones)
+flask_session/
+
+# Bases de datos locales (si usas SQLite u otro .db local)
+*.db
+
+# Archivos de construcción / empaquetado
+*.tar.gz
+*.zip
+
+# Datos / Documentación generada
+docs/_build/
+
+# IDEs / editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Tipo checker / análisis estático
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Otros
+*.tmp
+*.swp
+
