@@ -43,7 +43,7 @@ def create_app():
                 "allow_headers": ["Content-Type", "Authorization"],
                 "supports_credentials": True,
             },
-            r"/mydashboard/auth/*": {
+            r"/*": {
                 "origins": ["http://localhost:5173"],  # react vite
                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                 "allow_headers": ["Content-Type"],

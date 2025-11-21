@@ -4,30 +4,30 @@ from ext import db, ma
 from models.models import Device, User
 
 
-class RegisterSchema(Schema):
-    class Meta:
-        model = User
-        load_instance = True
-        sqla_session = db.session
+def validate_no_spaces(value):
+    if " " in value:
+        raise ValueError("El nombre de usuartio no puede contener espacios")
 
-        username = ma.auto_field(
-            required=True, validate=validate.Length(min=3, max=100)
-        )
-        email = ma.auto_field(
-            required=True,
-            validate=validate.Email(error="El email no tiene un formato valido"),
-        )
-        password = fields.String(
-            required=True,
-            load_only=True,
-            validate=validate.Length(
-                min=8, error="la password debe contener al menos 8 caracteres"
-            ),
-        )
+
+class RegisterSchema(Schema):
+    username = fields.String(
+        required=True, validate=[validate.Length(min=3, max=40), validate_no_spaces]
+    )
+    email = fields.String(
+        required=True,
+        validate=validate.Email(error="El email no tiene un formato valido"),
+    )
+    password = fields.String(
+        required=True,
+        load_only=True,
+        validate=validate.Length(
+            min=8, error="la password debe contener al menos 8 caracteres"
+        ),
+    )
 
 
 class LoginSchema(Schema):
-    username = fields.Email(required=True)
+    username = fields.String(required=True)
     password = fields.String(required=True, load_only=True)
 
 
@@ -37,8 +37,8 @@ class DeviceSchema(ma.SQLAlchemySchema):
         load_instance = True
         sqla_session = db.session
 
-    id_device = ma.auto_field(required=True, validate=validate.Length(min=1, max=100))
-    user_id = ma.auto_field(required=True)
+    id_device = ma.auto_field(dump_only=True)
+    user_id = fields.UUID(required=True, dump_only=True)
     user = fields.Nested(
         "UserSchema", only=("id_user", "user_name", "email"), dump_only=True
     )

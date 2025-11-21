@@ -11,17 +11,18 @@ from . import api
 
 class Devices(Resource):
     @token_required
-    def get(, current_user):
+    def get(self, current_user):
         devices = Device.query.order_by(Device.id_device.asc()).all()
-        return devices_schema.dump(deices), 200
+        return devices_schema.dump(devices), 200
 
     @token_required
-    def post(slef, current_user):
+    def post(self, current_user):
         data = request.get_json()
         if not data:
             return {"message":"Cuerpo JSON requerido"}, 400
         try:
             device = device_schema.load(data)
+            device.user_id = current_user.id_user
         except ValidationError as err:
             return {"error": err.messages}, 422
 
@@ -43,9 +44,12 @@ class DeviceDetail(Resource):
         if not data:
             return {"message": "Cuerpo JSON requerido"}, 400
         try:
+            data.pop('user_id', None)
             device = device_schema.load(data, instance=device, partial=False)
+            device.user_id = current_user.id_user
         except ValidationError as err:
             return {"error": err.messages}, 422
+        db.session.add(device)
         db.session.commit()
         return device_schema.dump(device), 200
 
