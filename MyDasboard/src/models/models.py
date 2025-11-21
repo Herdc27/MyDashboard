@@ -15,7 +15,7 @@ class User(db.Model):
         primary_key=True,
         server_default=db.text("uuid_generate_v4()"),
     )
-    email = db.Column(db.Strin(200), unique=True, nullable=False)
+    email = db.Column(db.String(200), unique=True, nullable=False)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
 
@@ -32,7 +32,7 @@ class Device(db.Model):
     id_device = db.Column(
         UUID(as_uuid=True),
         primary_key=True,
-        server_default=db.text("uudi_generate_v4()"),
+        server_default=db.text("uuid_generate_v4()"),
     )
     user_id = db.Column(
         UUID(as_uuid=True),

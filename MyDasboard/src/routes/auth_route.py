@@ -16,12 +16,13 @@ def register():
         return jsonify({"errors": errors}), 400
 
     username = data["username"]
+    email = data["email"]
     password = data["password"]
 
     if User.query.filter_by(username=username).first():
         return jsonify({"message": "Usuario ya existe"})
 
-    user = User(username=username)
+    user = User(username=username, email=email)
     user.set_password(password)
 
     db.session.add(user)

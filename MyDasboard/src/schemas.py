@@ -48,8 +48,8 @@ class DeviceSchema(ma.SQLAlchemySchema):
         required=True, validate=validate.Length(min=1, max=100)
     )
     serie_imei = ma.auto_field(required=True, validate=validate.Length(min=1, max=100))
-    date_purchased = ma.auto_field(required=True)
-    value_purchased = fields.Float(required=True, validate=validate.Range(min=0))
+    purchase_date = ma.auto_field(required=True)
+    purchase_value = fields.Float(required=True, validate=validate.Range(min=0))
 
 
 register_schema = RegisterSchema()
