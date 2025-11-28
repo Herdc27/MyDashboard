@@ -1,5 +1,4 @@
 import os
-from resource import bp as api_bp
 
 from dotenv import load_dotenv
 from flask import Flask
@@ -7,6 +6,7 @@ from flask_cors import CORS
 
 import models.models
 from ext import db, jwt, ma, migrate
+from resources import bp as api_bp
 from routes.auth_route import auth_bp
 
 load_dotenv()
