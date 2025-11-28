@@ -1,0 +1,19 @@
+# Git
+.git
+.gitignore
+
+
+# Entornos locales
+venv/
+*.pyc
+*.pyo
+*.pyd
+
+# Variables de entorno
+.env
+*.env
+
+# Docker
+Dockerfile
+docker-compose.yml
+

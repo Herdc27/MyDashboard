@@ -1,0 +1,47 @@
+services:
+  # --- Servicio 1: Tu API Flask ---
+  web:
+    build: . # Construye usando el Dockerfile del directorio actual
+    container_name: flask_api_prod
+    restart: always # Si falla, intenta reiniciarse automáticamente
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env # Inyecta las variables de entorno desde el archivo
+    environment:
+      - DB_HOST=db # Override DB_HOST to point to the db service in Docker network
+    depends_on:
+      db:
+        condition: service_healthy # ¡Truco Pro! Espera a que la BD esté lista de verdad
+    networks:
+      - app_network
+
+  # --- Servicio 2: Base de Datos PostgreSQL ---
+  db:
+    image: postgres:15-alpine # Versión ligera y segura
+    container_name: postgres_db_prod
+    restart: always
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Ejecuta init.sql al iniciar la BD
+      # - postgres_data:/var/lib/postgresql/data # Persistencia de datos - comentado para reinicializar
+    env_file:
+      - .env # Usa las mismas variables para configurar usuario/pass
+    networks:
+      - app_network
+    # Healthcheck: Comprueba cada 5s si la BD responde
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+# --- Volúmenes ---
+# Definimos un volumen nombrado. Docker lo gestiona y no se borra al eliminar contenedores.
+volumes:
+  postgres_data:
+
+# --- Redes ---
+# Red privada para que los contenedores se hablen entre sí por nombre (DNS interno)
+networks:
+  app_network:
+    driver: bridge
