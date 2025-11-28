@@ -32,6 +32,9 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels -r requeriments.t
 # Copiamos el codigo de la aplicacion
 COPY ./MyDasboard/src .
 
+# Make init_db.sh executable
+RUN chmod +x init_db.sh
+
 # CAmbiamos elususariosin privilegios
 USER appuser
 
@@ -42,5 +45,5 @@ EXPOSE 5000
 ENV FLASK_APP=wsgi.py
 
 # Comando de arranque: run migrations then start Gunicorn
-CMD ["sh", "-c", "flask db upgrade && gunicorn -b 0.0.0.0:5000 wsgi:application"]
+CMD ["sh", "-c", "./init_db.sh && gunicorn -b 0.0.0.0:5000 wsgi:application"]
 
